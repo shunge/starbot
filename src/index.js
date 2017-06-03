@@ -30,6 +30,8 @@ app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') })
 var clientId = '188949556064.190443751159';
 var clientSecret = '17f1970359389a9e0cd9238e90e37202';
 
+var tempURL = ""
+
 app.get('/oauth', function(req, res) {
     // When a user authorizes an app, a code query parameter is passed on the oAuth endpoint. If that code is not there, we respond with an error message
     if (!req.query.code) {
@@ -49,9 +51,10 @@ app.get('/oauth', function(req, res) {
             if (error) {
                 console.log(error);
             } else {
-                res.json(body);
                 var obj = JSON.parse(body)
+                res.send(obj.incoming_webhook.url);
                 console.log(obj.incoming_webhook.url)
+                tempURL = obj.incoming_webhook.url
 
             }
         })
