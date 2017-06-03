@@ -24,6 +24,39 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') })
 
+// Store our app's ID and Secret. These we got from Step 1. 
+// For this tutorial, we'll keep your API credentials right here. But for an actual app, you'll want to  store them securely in environment variables. 
+var clientId = '188949556064.190443751159';
+var clientSecret = '17f1970359389a9e0cd9238e90e37202';
+
+app.get('/oauth', function(req, res) {
+    // When a user authorizes an app, a code query parameter is passed on the oAuth endpoint. If that code is not there, we respond with an error message
+    if (!req.query.code) {
+        res.status(500);
+        res.send({"Error": "Looks like we're not getting code."});
+        console.log("Looks like we're not getting code.");
+    } else {
+        // If it's there...
+
+        // We'll do a GET call to Slack's `oauth.access` endpoint, passing our app's client ID, client secret, and the code we just got as query parameters.
+        request({
+            url: 'https://slack.com/api/oauth.access', //URL to hit
+            qs: {code: req.query.code, client_id: clientId, client_secret: clientSecret}, //Query string data
+            method: 'GET', //Specify the method
+
+        }, function (error, response, body) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.json(body);
+                var obj = JSON.parse(body)
+                console.log(obj.incoming_webhook.url)
+
+            }
+        })
+    }
+});
+
 app.post('/commands/starbot', (req, res) => {
   let payload = req.body
 
