@@ -2,6 +2,7 @@
 'use strict'
 
 const express = require('express')
+const request = require('request');
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const _ = require('lodash')
