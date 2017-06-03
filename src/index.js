@@ -51,8 +51,8 @@ app.get('/oauth', function(req, res) {
             if (error) {
                 console.log(error);
             } else {
+                res.json(body);
                 var obj = JSON.parse(body)
-                res.send(obj.incoming_webhook.url);
                 console.log(obj.incoming_webhook.url)
                 tempURL = obj.incoming_webhook.url
 
