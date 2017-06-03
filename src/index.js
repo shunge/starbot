@@ -30,7 +30,7 @@ app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') })
 var clientId = '188949556064.190443751159';
 var clientSecret = '17f1970359389a9e0cd9238e90e37202';
 
-var tempURL = ""
+var tempURL = "used"
 
 app.get('/oauth', function(req, res) {
     // When a user authorizes an app, a code query parameter is passed on the oAuth endpoint. If that code is not there, we respond with an error message
@@ -52,14 +52,20 @@ app.get('/oauth', function(req, res) {
                 console.log(error);
             } else {
                 res.json(body);
-                var obj = JSON.parse(body)
-                console.log(obj.incoming_webhook.url)
-                tempURL = obj.incoming_webhook.url
-
+                var obj = JSON.parse(body);
+                if (obj.incoming_webhook != null){
+                	console.log(obj.incoming_webhook.url);
+                	tempURL = obj.incoming_webhook.url;
+            	}
             }
         })
     }
 });
+
+app.get('/', (req, res) => { 
+	res.send(tempURL);
+	tempURL = "used";
+	 })
 
 app.post('/commands/starbot', (req, res) => {
   let payload = req.body
