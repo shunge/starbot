@@ -62,7 +62,7 @@ app.get('/oauth', function(req, res) {
     }
 });
 
-app.get('/', (req, res) => { 
+app.get('/webhook', (req, res) => { 
 	res.send(tempURL);
 	tempURL = "used";
 	 })
